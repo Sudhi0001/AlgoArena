@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile – AlgoArena</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #0e0e0e, #000);
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .profile-container {
+      background: #1b1b1b;
+      padding: 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(255, 211, 105, 0.25);
+      width: 90%;
+      max-width: 450px;
+      animation: fadeInPop 0.5s ease;
+      text-align: center;
+    }
+
+    @keyframes fadeInPop {
+      0% {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .profile-container h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #FFD369;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #FFD369;
+      margin-bottom: 1.2rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input {
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #2a2a2a;
+      color: #fff;
+      box-shadow: inset 0 0 6px #FFD36955;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 10px #FFD36999;
+    }
+
+    button {
+      padding: 12px;
+      font-weight: 600;
+      background-color: #FFD369;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 0 10px #FFD36988;
+    }
+
+    button:hover {
+      background-color: #e6bd5b;
+      transform: scale(1.05);
+    }
+
+    .link-back {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .link-back a {
+      color: #FFD369;
+      text-decoration: none;
+    }
+
+    .link-back a:hover {
+      text-decoration: underline;
+    }
+
+    .danger-btn {
+      background-color: transparent;
+      color: #ff4d4d;
+      border: 2px solid #ff4d4d;
+      margin-top: 1rem;
+    }
+
+    .danger-btn:hover {
+      background-color: #ff4d4d;
+      color: #000;
+    }
+
+    .floating-octo {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 45px;
+      animation: float 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <img src="octo.jpg" class="floating-octo" alt="Mascot">
+
+  <div class="profile-container">
+    <h2>Your Profile</h2>
+    <img src="octo.jpg" alt="Profile Avatar" class="avatar">
+
+    <form method="POST" action="/update_profile">
+      <input type="text" name="username" value="Sudheendra" required>
+      <input type="email" name="email" value="sudheendra@gmail.com" required>
+      <button type="submit">Update Profile</button>
+    </form>
+
+    <form method="POST" action="/logout">
+      <button style="margin-top: 1rem;">Logout</button>
+    </form>
+
+    <form method="POST" action="/delete_account" onsubmit="return confirm('Are you sure you want to delete your account?');">
+      <button class="danger-btn">Delete Account</button>
+    </form>
+
+    <div class="link-back">
+      <a href="index.html">← Back to Dashboard</a>
+    </div>
+  </div>
+</body>
+</html>

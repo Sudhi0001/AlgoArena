@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile – AlgoArena</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #000;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .profile-container {
+      background: #111;
+      border: 2px solid #FFD369;
+      border-radius: 20px;
+      padding: 40px;
+      width: 350px;
+      box-shadow: 0 0 25px rgba(255, 211, 105, 0.2);
+      animation: slideUp 1s ease-out;
+    }
+
+    @keyframes slideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      color: #FFD369;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #FFD369;
+      background: #222;
+      color: #fff;
+      border-radius: 8px;
+      transition: 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #FFC107;
+      box-shadow: 0 0 8px #FFD369;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      background: #FFD369;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #FFC107;
+    }
+
+    .danger {
+      background: #D72638;
+      color: #fff;
+    }
+
+    .danger:hover {
+      background: #c01f2e;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .links a {
+      color: #FFD369;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .links a:hover {
+      color: #FFC107;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <h2><i class="fas fa-user-circle"></i> Your Profile</h2>
+    <form method="POST" action="/update_profile">
+      <input type="text" name="username" value="Sudheendra" required />
+      <input type="email" name="email" value="sudheendra@gmail.com" required />
+      <button type="submit"><i class="fas fa-save"></i> Update Profile</button>
+    </form>
+    <form method="POST" action="/delete_account" onsubmit="return confirm('Are you sure you want to delete your account?');">
+      <button class="danger" type="submit"><i class="fas fa-trash"></i> Delete Account</button>
+    </form>
+    <form method="POST" action="/logout">
+      <button type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
+    <div class="links">
+      <p><a href="index.html"><i class="fas fa-arrow-left"></i> Back to Dashboard</a></p>
+    </div>
+  </div>
+</body>
+</html>

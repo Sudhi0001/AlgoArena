@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test Me Now</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* All your styles remain unchanged */
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .topbar {
+      background-color: #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+    .topbar .logo {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+    }
+    .topbar .logo:hover {
+      color: #FFD369;
+    }
+
+    .icons a {
+      margin-left: 1.2rem;
+      font-size: 1.2rem;
+      color: #F4F4F4;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .icons a:hover {
+      color: #FFD369;
+    }
+
+    .test-container {
+      max-width: 800px;
+      margin: 3rem auto;
+      background-color: #1E1E1E;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(255, 211, 105, 0.1);
+    }
+
+    .timer {
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: #08064b;
+      padding: 0.5rem 1rem;
+      width: fit-content;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #4ADEDE;
+      margin-bottom: 1.5rem;
+      animation: pulseTimer 2s infinite;
+    }
+
+    .question {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #FFD369;
+      margin-bottom: 1.2rem;
+      animation: flipIn 0.6s ease;
+      transform-origin: top;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .options label {
+      background-color: #2C2C2C;
+      padding: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .options label:hover {
+      background-color: #333;
+      box-shadow: 0 0 10px #FFD36933;
+    }
+    .options label:active::after {
+      content: '';
+      position: absolute;
+      background: #FFD36955;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      width: 100px;
+      height: 100px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+    }
+
+    .options input[type="radio"] {
+      accent-color: #FFD369;
+      transform: scale(1.2);
+    }
+
+    .btn {
+      background-color: #FFD369;
+      color: #000;
+      font-weight: 600;
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin-right: 1rem;
+    }
+
+    .btn:hover {
+      background-color: #e6bd5b;
+      transform: scale(1.07);
+      box-shadow: 0 0 12px #FFD36955;
+    }
+
+    .result {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      background-color: #08064b;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #4ADEDE88;
+      color: #fff;
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    footer {
+      background-color: #1E1E1E;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-top: 4rem;
+    }
+    footer img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .test-container {
+        padding: 1rem;
+      }
+      .question {
+        font-size: 1.1rem;
+      }
+    }
+
+    #submit-btn:disabled {
+      background-color: #999;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-box {
+      background-color: #1e1e1e;
+      color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #FFD369;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #FFD36988;
+      position: relative;
+      animation: modalPop 0.3s ease-out;
+    }
+
+    .close {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #FFD369;
+    }
+
+    .floating-back-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: #FFD369;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px #FFD369;
+      transition: transform 0.3s ease;
+    }
+
+    .floating-back-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .floating-back-btn img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .xp-bar {
+      width: 100%;
+      background-color: #2c2c2c;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 16px;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 0 10px #FFD36933;
+    }
+
+    .xp-fill {
+      height: 100%;
+      background-color: #FFD369;
+      width: 0%;
+      transition: width 0.8s ease;
+    }
+
+    .xp-label {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      color: #ccc;
+    }
+
+    @keyframes pulseTimer {
+      0%, 100% {
+        box-shadow: 0 0 10px #4ADEDE, 0 0 20px #4ADEDE22;
+      }
+      50% {
+        box-shadow: 0 0 20px #4ADEDE99, 0 0 30px #4ADEDE55;
+      }
+    }
+
+    @keyframes ripple {
+      0% {
+        transform: translate(-50%, -50%) scale(0.2);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2.5);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes flipIn {
+      from { transform: rotateX(-90deg); opacity: 0; }
+      to { transform: rotateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="topbar">
+  <a href="index.html" class="logo">AlgoArena</a>
+  <div class="icons">
+    <a href="index.html"><i class="fa fa-home"></i></a>
+    <a href="#" data-modal="profile-modal"><i class="fa fa-user"></i></a>
+    <a href="#" data-modal="leaderboard-modal"><i class="fa fa-trophy"></i></a>
+  </div>
+</section>
+
+<div class="test-container">
+  <div class="timer" id="timer">Time Left: 00:30</div>
+  <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
+  <div class="xp-label" id="xpLabel">XP: 0 / 1000</div>
+  <div class="question" id="question">Loading...</div>
+  <div class="options" id="options"></div>
+  <button class="btn" id="submit-btn" disabled>Submit</button>
+  <button class="btn" id="next-btn" style="display:none;">Next</button>
+  <div class="result" id="result"></div>
+</div>
+
+<button onclick="localStorage.clear(); location.reload();" class="btn">Reset Stats</button>
+
+<footer>
+  <img src="octo.jpg" alt="AlgoArena Logo">
+  <p>&copy; 2023 AlgoArena. All rights reserved.</p>
+  <p>Contact: support@algoarena.com</p>
+</footer>
+
+<!-- Profile Modal -->
+<div class="modal" id="profile-modal">
+  <div class="modal-box">
+    <span class="close" data-close="profile-modal">&times;</span>
+    <h2>Profile</h2>
+    <p>Sudheendra G K</p>
+    <p>Level 5</p>
+    <p>XP: 1200/1500</p>
+    <p>Next Level: 1500 XP</p>
+    <p>Rank: 10</p>
+    <button class="btn" onclick="location.reload();">Close</button>
+  </div>
+</div>
+
+<a href="index.html" class="floating-back-btn">
+  <img src="octo.jpg" alt="Back to Dashboard" />
+</a>
+
+<!-- Leaderboard Modal -->
+<div class="modal" id="leaderboard-modal">
+  <div class="modal-box">
+    <span class="close" data-close="leaderboard-modal">&times;</span>
+    <h2>Leaderboard</h2>
+    <ul>
+      <li>Sudheendra G K - 1500 XP</li>
+      <li>Vishal Prajwal - 1400 XP</li>
+      <li>Yashas H L - 1300 XP</li>
+      <li>Manoj - 1200 XP</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  let current = 0;
+  let score = 0;
+  let time = 30;
+  let timer;
+  let currentXP = parseInt(localStorage.getItem("xp")) || 0;
+  const xpGoal = 1000;
+
+  const questions = [
+    {
+      q: "What is the full form of DSA?",
+      options: ["Data Structures and Algorithms", "Design and Analysis", "Data Science and Analysis", "Data Security and Access"],
+      answer: "Data Structures and Algorithms"
+    },
+    {
+      q: "Which data structure uses FIFO?",
+      options: ["Stack", "Queue", "Array", "Graph"],
+      answer: "Queue"
+    },
+    {
+      q: "Which sorting algorithm is fastest on average?",
+      options: ["Bubble Sort", "Merge Sort", "Quick Sort", "Selection Sort"],
+      answer: "Quick Sort"
+    }
+  ];
+
+  const questionEl = document.getElementById('question');
+  const optionsEl = document.getElementById('options');
+  const timerEl = document.getElementById('timer');
+  const resultEl = document.getElementById('result');
+  const submitBtn = document.getElementById('submit-btn');
+  const nextBtn = document.getElementById('next-btn');
+
+  function updateXPDisplay() {
+    document.getElementById("xpLabel").textContent = `XP: ${currentXP} / ${xpGoal}`;
+    const percent = (currentXP / xpGoal) * 100;
+    document.getElementById("xpFill").style.width = `${Math.min(percent, 100)}%`;
+  }
+
+  function loadQuestion() {
+    clearInterval(timer);
+    time = 30;
+    timerEl.textContent = "Time Left: 00:30";
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = 0.5;
+
+    timer = setInterval(() => {
+      time--;
+      timerEl.textContent = `Time Left: 00:${time < 10 ? '0' : ''}${time}`;
+      if (time <= 0) {
+        clearInterval(timer);
+        showResult(false);
+      }
+    }, 1000);
+
+    const q = questions[current];
+    questionEl.textContent = q.q;
+    optionsEl.innerHTML = '';
+    q.options.forEach(opt => {
+      const label = document.createElement('label');
+      label.innerHTML = `<input type="radio" name="option" value="${opt}"> ${opt}`;
+      optionsEl.appendChild(label);
+    });
+
+    document.querySelectorAll('input[name="option"]').forEach(input => {
+      input.addEventListener('change', () => {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = 1;
+      });
+    });
+
+    resultEl.style.display = 'none';
+    submitBtn.style.display = 'inline-block';
+    nextBtn.style.display = 'none';
+  }
+
+  function showResult(submitted = true) {
+    clearInterval(timer);
+    const selected = document.querySelector('input[name="option"]:checked');
+    if (selected && submitted) {
+      if (selected.value === questions[current].answer) {
+        score++;
+        resultEl.textContent = `✅ Correct!`;
+      } else {
+        resultEl.textContent = `❌ Incorrect! Correct answer: ${questions[current].answer}`;
+      }
+    } else {
+      resultEl.textContent = '⏰ Time up or No option selected!';
+    }
+
+    resultEl.style.display = 'block';
+    submitBtn.style.display = 'none';
+    nextBtn.style.display = 'inline-block';
+  }
+
+  submitBtn.addEventListener('click', showResult);
+
+  nextBtn.addEventListener('click', () => {
+    current++;
+    if (current < questions.length) {
+      loadQuestion();
+    } else {
+      questionEl.textContent = "🎉 Test Completed!";
+      optionsEl.innerHTML = "";
+      clearInterval(timer);
+      timerEl.textContent = "Test Over!";
+      timerEl.classList.remove("pulse");
+
+      let attempts = parseInt(localStorage.getItem("attempts")) || 0;
+      let best = parseInt(localStorage.getItem("bestScore")) || 0;
+      attempts++;
+      if (score > best) best = score;
+
+      localStorage.setItem("lastScore", score);
+      localStorage.setItem("bestScore", best);
+      localStorage.setItem("attempts", attempts);
+
+      const earnedXP = score * 50;
+      currentXP += earnedXP;
+      localStorage.setItem("xp", currentXP);
+      updateXPDisplay();
+
+      const badge = score === 3 ? "🥇 Perfect!" : score === 2 ? "🥈 Great!" : score === 1 ? "🥉 Good Try!" : "🙈 Try Again!";
+
+      resultEl.innerHTML = `
+        <strong>Your Score:</strong> ${score} / ${questions.length}<br><br>
+        <strong>Total Attempts:</strong> ${attempts}<br>
+        <strong>Last Score:</strong> ${score}<br>
+        <strong>Best Score:</strong> ${best}<br><br>
+        <strong>${badge}</strong><br>🎯 You earned <strong>+${earnedXP} XP</strong>
+      `;
+
+      resultEl.style.display = 'block';
+      nextBtn.style.display = 'none';
+    }
+  });
+
+  // Modal logic
+  document.querySelectorAll('[data-modal]').forEach(trigger => {
+    trigger.addEventListener('click', e => {
+      e.preventDefault();
+      const modalId = trigger.getAttribute('data-modal');
+      document.getElementById(modalId).style.display = 'block';
+    });
+  });
+
+  document.querySelectorAll('.close').forEach(closeBtn => {
+    closeBtn.addEventListener('click', () => {
+      const modalId = closeBtn.getAttribute('data-close');
+      document.getElementById(modalId).style.display = 'none';
+    });
+  });
+
+  window.addEventListener('click', e => {
+    document.querySelectorAll('.modal').forEach(modal => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  });
+
+  window.onload = () => {
+    loadQuestion();
+    updateXPDisplay();
+  };
+</script>
+
+</body>
+</html>
